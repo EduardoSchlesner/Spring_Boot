@@ -16,7 +16,7 @@ public class TopicosController {
 	                                // @ResponseBody -> não é mais necessário, pois colocamos o restController.
 	public List<Topico> lista() {
 		
-		Topico topico = new Topico ("Duvida", "Duvida com spring", new Curso("Spring", "Programação"));
+		Topico topico = new Topico ("Dúvida", "Dúvida a tratar do Spring Boot", new Curso("Spring Boot", "Programação"));
 		
 		return Arrays.asList(topico, topico, topico);
 	}
