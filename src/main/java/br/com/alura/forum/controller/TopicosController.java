@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import br.com.alura.forum.modelo.Topico;
 import br.com.alura.forum.modelo.Curso;
 
-@Controller
+@RestController // assumindo que todo método terá um ResponseBody!!!
 public class TopicosController {
 
 	@RequestMapping("/topicos")
-	@ResponseBody
+	                                // @ResponseBody -> não é mais necessário, pois colocamos o restController.
 	public List<Topico> lista() {
 		
 		Topico topico = new Topico ("Duvida", "Duvida com spring", new Curso("Spring", "Programação"));
