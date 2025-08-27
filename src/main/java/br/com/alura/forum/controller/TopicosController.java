@@ -13,7 +13,7 @@ import br.com.alura.forum.controller.dto.TopicoDto;
 @RestController // assumindo que todo método terá um ResponseBody!!!
 public class TopicosController {
 
-    @Autowired
+    @Autowired //testecommit
     private TopicoRepository topicoRepository;
 
 	@RequestMapping("/topicos")
