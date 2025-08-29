@@ -1,23 +1,30 @@
 package br.com.alura.forum.controller;
 
+import java.net.URI;
 import java.util.List;
 
 import br.com.alura.forum.TopicoRepository;
+import br.com.alura.forum.controller.form.TopicoForm;
+import br.com.alura.forum.repository.CursoRepository;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import br.com.alura.forum.modelo.Topico;
 import br.com.alura.forum.controller.dto.TopicoDto;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController // assumindo que todo método terá um ResponseBody!!!
+@RequestMapping("/topicos") //todos os metodos dessa classe começarão com /topicos!!!
 public class TopicosController {
-
     @Autowired //testecommit
     private TopicoRepository topicoRepository;
+    @Autowired
+    private CursoRepository cursoRepository;
+    // @ResponseBody -> não é mais necessário, pois colocamos o restController.
 
-	@RequestMapping("/topicos")
-	                                // @ResponseBody -> não é mais necessário, pois colocamos o restController.
+    @GetMapping
 	public List<TopicoDto> lista(String nomeCurso) {
         if(nomeCurso == null) {
             List<Topico> topicos = topicoRepository.findAll();
@@ -27,5 +34,12 @@ public class TopicosController {
             return TopicoDto.converter(topicos);
         }
 	}
-	
+    @PostMapping
+    public ResponseEntity<TopicoDto> cadastrar(@RequestBody TopicoForm form, UriComponentsBuilder uriBuilder) {
+        Topico topico = form.converter(cursoRepository);
+        topicoRepository.save(topico);
+
+        URI uri = uriBuilder.path("/topicos/{id}").buildAndExpand(topico.getId()).toUri();
+        return ResponseEntity.created(uri).body(new TopicoDto(topico));
+    }
 }
