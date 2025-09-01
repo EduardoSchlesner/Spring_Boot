@@ -15,6 +15,8 @@ import br.com.alura.forum.modelo.Topico;
 import br.com.alura.forum.controller.dto.TopicoDto;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
+
 @RestController // assumindo que todo método terá um ResponseBody!!!
 @RequestMapping("/topicos") //todos os metodos dessa classe começarão com /topicos!!!
 public class TopicosController {
@@ -35,7 +37,7 @@ public class TopicosController {
         }
 	}
     @PostMapping
-    public ResponseEntity<TopicoDto> cadastrar(@RequestBody TopicoForm form, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<TopicoDto> cadastrar(@RequestBody @Valid TopicoForm form, UriComponentsBuilder uriBuilder) {
         Topico topico = form.converter(cursoRepository);
         topicoRepository.save(topico);
 
