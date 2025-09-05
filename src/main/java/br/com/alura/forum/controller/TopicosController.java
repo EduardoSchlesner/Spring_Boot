@@ -2,6 +2,7 @@ package br.com.alura.forum.controller;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import br.com.alura.forum.TopicoRepository;
 import br.com.alura.forum.controller.dto.DetalhesDoTopicoDto;
@@ -49,10 +50,13 @@ public class TopicosController {
     }
 
     @GetMapping("/{id}")
-    public DetalhesDoTopicoDto detalhar(@PathVariable Long id){
-
-        Topico topico = topicoRepository.getOne(id);
-        return new DetalhesDoTopicoDto(topico);
+    @Transactional
+    public ResponseEntity<DetalhesDoTopicoDto> detalhar(@PathVariable Long id){
+        Optional<Topico> topico = topicoRepository.findById(id);
+        if (topico.isPresent()) {
+            return ResponseEntity.ok(new DetalhesDoTopicoDto(topico.get()));
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PutMapping("/{id}")
@@ -63,6 +67,7 @@ public class TopicosController {
     }
 
     @DeleteMapping("/{id}")
+    @Transactional
     public ResponseEntity<?> remover(@PathVariable Long id){
         topicoRepository.deleteById(id);
         return  ResponseEntity.ok().build();
