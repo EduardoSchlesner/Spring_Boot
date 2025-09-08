@@ -61,7 +61,6 @@ public class TopicosController {
     }
 
     @GetMapping("/{id}")
-    @Transactional
     public ResponseEntity<DetalhesDoTopicoDto> detalhar(@PathVariable Long id){
         Optional<Topico> topico = topicoRepository.findById(id);
         if (topico.isPresent()) {
